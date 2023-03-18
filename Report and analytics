@@ -1,7 +1,7 @@
 #An analytical report is a business report for stakeholders to determine the best course of action. Report analysis can include review analysis; it could be review regarding delivery time or quality.
 
 #Report analysis is a constantly required document in a business, be it a small or big company. In the digital age, analytical reporting seems to be more indispensable but challenging because of the data explosion.
-#
+#The dataset contains the product reviews of customers who have purchased products from the canteen.
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -11,7 +11,7 @@ sentiments = SentimentIntensityAnalyzer()
 data = pd.read_csv("Reviews.csv")
 print(data.head())
 print(data.describe())
-#
+#The Score column of this dataset contains the ratings that customers have given to the item based on their experience with the food item.
 ratings = data["Score"].value_counts()
 numbers = ratings.index
 quantity = ratings.values
@@ -25,7 +25,7 @@ fig.gca().add_artist(central_circle)
 plt.rc('font', size=12)
 plt.title("Distribution of Canteen Product Ratings", fontsize=20)
 plt.show()
-#
+#Calculating the sentiment scores of the customer reviews mentioned in the Text column of the dataset
 sentiments = SentimentIntensityAnalyzer()
 data["Positive"] = [sentiments.polarity_scores(i)["pos"] for i in data["Text"]]
 data["Negative"] = [sentiments.polarity_scores(i)["neg"] for i in data["Text"]]
@@ -34,7 +34,7 @@ print(data.head())
 x = sum(data["Positive"])
 y = sum(data["Negative"])
 z = sum(data["Neutral"])
-#
+#Now let’s see how most people rated the food item they bought from canteen
 def sentiment_score(a, b, c):
     if (a>b) and (a>c):
         print("Positive 😊 ")
@@ -42,7 +42,7 @@ def sentiment_score(a, b, c):
         print("Negative 😠 ")
     else:
         print("Neutral 🙂 ")
-#
+#Now let’s see the total of all sentiment scores
 sentiment_score(x, y, z)
 print("Positive: ", x)
 print("Negative: ", y)
