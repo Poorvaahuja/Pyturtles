@@ -1,4 +1,5 @@
-#In recent times we have seen uncertainty in business world due to sudden attack of viruses, which lead to long or short term closure of business. in covid 19 days we saw how lockdown impacted many business models, now  a new virus named H3N2 is spreading, which led to school closure in puducherry (Union territory), having a direct impact on the school college canteens. thus prediction can help in these cases.
+#In recent times we have seen uncertainty in business world due to sudden attack of viruses, which led to long or short term closure of business.
+#In covid 19 days we saw how lockdown impacted many business models, now  a new virus named H3N2 is spreading, which led to school closure in puducherry (Union territory), having a direct impact on the school college canteens. thus prediction can help in these cases.
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,7 +12,7 @@ plt.style.use("ggplot")
 
 df0 = pd.read_csv("CONVENIENT_global_confirmed_cases.csv")
 df1 = pd.read_csv("CONVENIENT_global_deaths.csv")
-#
+#Data Preparation
 world = pd.DataFrame({"Country":[],"Cases":[]})
 world["Country"] = df0.iloc[:,1:].columns
 cases = []
@@ -38,7 +39,7 @@ world = world.groupby("Country")["Cases"].sum().reset_index()
 world.head()
 continent=pd.read_csv("continents2.csv")
 continent["name"]=continent["name"].str.upper()
-#
+#Data Visualization
 world["Cases Range"]=pd.cut(world["Cases"],[-150000,50000,200000,800000,1500000,15000000],labels=["U50K","50Kto200K","200Kto800K","800Kto1.5M","1.5M+"])
 alpha =[]
 for i in world["Country"].str.upper().values:
@@ -60,7 +61,7 @@ fig = px.choropleth(world.dropna(),
 fig.update_geos(fitbounds="locations", visible=False)
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 fig.show()
-#
+#Daily cases around the world
 count = []
 for i in range(1,len(df0)):
     count.append(sum(pd.to_numeric(df0.iloc[i,1:].values)))
@@ -81,13 +82,13 @@ df.Cases.rolling(window=5).mean().plot(figsize=(10,5),label="MA5")
 plt.ylabel("Cases")
 plt.legend()
 plt.show()
-#
+#Daily covid19 deaths in the world
 df.Deaths.plot(title="Daily Covid19 Deaths in World",marker=".",figsize=(10,5),label="daily deaths")
 df.Deaths.rolling(window=5).mean().plot(figsize=(10,5),label="MA5")
 plt.ylabel("Deaths")
 plt.legend()
 plt.show()
-#
+#Covid-19 Cases Prediction for Next 30 Days
 class Fbprophet(object):
     def fit(self,data):
 
