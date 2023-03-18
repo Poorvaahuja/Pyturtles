@@ -2,6 +2,7 @@
 #The task of detecting age and gender, however, is an inherently difficult problem, more so than many other computer vision tasks.
 #The reason is that to have tags for such images, we need to access the personal information of the subjects in the images.
 #Prediction of ages can only start by writing the code for detecting faces because without face detection we will not be able to move further with the task of age and gender prediction.
+#Here we have used cvlib tp write source code for real time gender detection
 def getFaceBox(net, frame, conf_threshold=0.7):
     frameOpencvDnn = frame.copy()
     frameHeight = frameOpencvDnn.shape[0]
@@ -21,7 +22,7 @@ def getFaceBox(net, frame, conf_threshold=0.7):
             bboxes.append([x1, y1, x2, y2])
             cv.rectangle(frameOpencvDnn, (x1, y1), (x2, y2), (0, 255, 0), int(round(frameHeight/150)), 8)
     return frameOpencvDnn, bboxes
-  #
+  #Now the next step is to predict the gender of humans in the image.
   genderProto = "gender_deploy.prototxt"
 genderModel = "gender_net.caffemodel"
 ageNet = cv.dnn.readNet(ageModel, ageProto)
@@ -34,7 +35,7 @@ genderPreds = genderNet.forward()
 gender = genderList[genderPreds[0].argmax()]
 print("Gender Output : {}".format(genderPreds))
 print("Gender : {}".format(gender))
-#
+#Now the next task is to predict the age of the human in the image.
 ageProto = "age_deploy.prototxt"
 ageModel = "age_net.caffemodel"
 ageNet = cv.dnn.readNet(ageModel, ageProto)
@@ -46,7 +47,7 @@ agePreds = ageNet.forward()
 age = ageList[agePreds[0].argmax()]
 print("Gender Output : {}".format(agePreds))
 print("Gender : {}".format(age))
-#
+#The last code we need to write is to display the output:
 label = "{}, {}".format(gender, age)
 cv.putText(frameFace, label, (bbox[0], bbox[1]-20), cv.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 3, cv.LINE_AA)
 cv.imshow("Age Gender Demo", frameFace)
